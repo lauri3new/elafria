@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <script type="module">
+      import elafria from './elafria.js';
+      console.log(elafria);
+      elafria.get('https://jsonplaceholder.typicode.com/posts/1')
+      .then((response) => {
+        console.log(response);
+      })
+      elafria.post('https://jsonplaceholder.typicode.com/posts',null, { 'haha': 'hahaha' })
+      .then((response) => {
+        console.log(response);
+      })
+    </script>
+  </head>
+  <body>
+    <h1>Testing elafria</h1>
+  </body>
+</html>

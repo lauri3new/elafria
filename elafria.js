@@ -8,11 +8,11 @@ return obj
 
 const elafria = () => {
 
-let requestTwo = (method) => (url, payload, header) => {
+let request = (method) => (url, header, payload = null) => {
   return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest();
       xhr.open(method, url);
-      if (header.headers) {
+      if (header && header.headers) {
           Object.keys(header.headers).forEach(key => {
               xhr.setRequestHeader(key, header.headers[key]);
           });
@@ -42,38 +42,10 @@ let requestTwo = (method) => (url, payload, header) => {
   });
 };
 
-let request = (method) => (url, header) => {
-  return new Promise((resolve, reject) => {
-      let xhr = new XMLHttpRequest();
-      xhr.open(method, url);
-      if (header.headers) {
-          Object.keys(header.headers).forEach(key => {
-              xhr.setRequestHeader(key, header.headers[key]);
-          });
-      }
-      xhr.setRequestHeader('Accept', 'application/vnd.wearepercent.v2+json');
-      xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-              resolve({
-                data: xhr.response && JSON.parse(xhr.response),
-                status: xhr.status,
-                headers: clrfToString(xhr.getAllResponseHeaders()),
-              });
-          } else {
-              reject(JSON.parse(xhr.response));
-          }
-      };
-      xhr.onerror = () => {
-        reject({ error: true, status: xhr.status});
-      }
-      xhr.send();
-  });
-};
-
 let getRequest = request('GET');
-let patchRequest = requestTwo('PATCH');
-let postRequest = requestTwo('POST');
-let deleteRequest = requestTwo('DELETE');
+let patchRequest = request('PATCH');
+let postRequest = request('POST');
+let deleteRequest = request('DELETE');
 
 return {
   "get": (url, header) => getRequest(url, header),  
